@@ -1,2 +1,23 @@
-<h1>Blogs#index</h1>
-<p>Find me in app/views/blogs/index.html.erb</p>
+<div data-controller="blogs">
+	<table class="table data-table" id="blogs-table">
+		<thead>
+		<tr>
+			<td>標題</td>
+			<td></td>
+		</tr>
+		</thead>
+		<tbody>
+		<% blogs.each do |blog| %>
+			<tr>
+				<td><%= blog.name %></td>
+				<td>
+					<%= link_to "編輯", edit_blog_path(blog), class: "btn btn-secondary btn-sm" %>
+					<%= link_to "刪除", blog_path(blog), class: "btn btn-danger btn-sm", method: :delete, data: { confirm: "會聯同文章一同刪除，確定嗎?" } %>
+				</td>
+			</tr>
+		<% end %>
+		</tbody>
+	</table>
+	
+	<%= link_to "新增", new_blog_path, class: "btn btn-primary" %>
+</div>

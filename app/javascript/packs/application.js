@@ -7,6 +7,16 @@ import 'bootstrap/dist/css/bootstrap'
 import 'stylesheets/application'
 import 'bootstrap/dist/js/bootstrap'
 
+/* jquery */
+var $ = require("jquery")
+window.jQuery = $;
+window.$ = $;
+
+/* datatables */
+require('datatables.net')
+require('datatables.net-bs5')
+require('datatables.net-bs5/css/dataTables.bootstrap5.min.css')
+
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"

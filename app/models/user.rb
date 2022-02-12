@@ -9,6 +9,8 @@ class User < ApplicationRecord
   # or
   # before_validation :set_default_role
   has_and_belongs_to_many :blogs, join_table: "user_blog_interfaces"
+  # https://stackoverflow.com/questions/2799746/habtm-relationship-does-not-support-dependent-option
+  before_destroy { blogs.clear }
 
   private
 

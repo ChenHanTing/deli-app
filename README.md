@@ -438,6 +438,26 @@ yarn add datatables.net-bs5
 rails webpacker:install:stimulus
 ````
 
+#### Gem
+
+安裝 descent_exposure && simple_form
+
+````sh
+bundle add decent_exposure
+bundle add simple_form
+````
+
+在ruby3的環境下不支援
+
+````txt
+Fetching gem metadata from https://rubygems.org/...........
+Fetching gem metadata from https://rubygems.org/.
+Could not find gem 'Ruby (~> 3.0.2.0)' in the local ruby installation.
+The source contains 'Ruby' at: 2.7.2.137
+````
+
+
+
 
 
 ## 參考資料
