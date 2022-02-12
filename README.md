@@ -417,6 +417,29 @@ class UsersController < ApplicationController
 end
 ````
 
+## yarn
+
+安裝相關套件
+
+````sh
+yarn add datatables.net-bs4 datatables.net-dt jquery axios  
+````
+
+ 不過後來發現目前使用的是bs5
+
+````sh
+yarn remove datatables.net-bs4
+yarn add datatables.net-bs5
+````
+
+安裝stimulus
+
+````sh
+rails webpacker:install:stimulus
+````
+
+
+
 ## 參考資料
 
 - [安裝ruby3版本](https://richstone.io/where-is-ruby-3-0-0-on-rbenv/)
