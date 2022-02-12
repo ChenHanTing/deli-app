@@ -1,6 +1,6 @@
 # 德利App
 
-#### 前置作業
+## 前置作業
 
 查看可安裝的版本
 
@@ -121,7 +121,7 @@ Use Ctrl-C to stop
 
 可以成功看到首頁
 
-#### devise
+## devise
 
 ````shell
 rails generate devise:install
@@ -259,7 +259,7 @@ Running via Spring preloader in process 37272
       create      app/assets/stylesheets/pages.scss
 ````
 
-#### bootstrap
+## bootstrap
 
 layout必須要有些使用者登入及登出資訊，首先先從bootstrap官方找個導覽列加入，再來為寫入客製css，來建立application.scss
 
@@ -302,7 +302,7 @@ git add .
 git commit -m "feat: init"
 ````
 
-#### role
+## role
 
 建立基本的角色設定
 
@@ -336,7 +336,7 @@ class User < ActiveRecord::Base
 end
 ````
 
-#### model
+## model
 
 ````shell
 rails g model blogs name  
@@ -389,9 +389,35 @@ git branch -M main
 git push -u origin main
 ````
 
+## controller
 
+````shell
+rails g controller users index edit
+rails g controller blogs index new edit
+rails g controller articles index new edit
+````
 
-#### 參考資料
+role playing in users_controller
+
+````ruby
+class UsersController < ApplicationController
+  before_action :is_admin
+
+  def index
+  end
+
+  def edit
+  end
+
+  private
+
+  def is_admin
+    redirect_to :root unless current_user.role&.name == "admin"
+  end
+end
+````
+
+## 參考資料
 
 - [安裝ruby3版本](https://richstone.io/where-is-ruby-3-0-0-on-rbenv/)
 - [建立新專案](https://www.aloucaslabs.com/miniposts/using-a-specific-rails-version-when-you-generate-a-new-rails-app-with-rails-new-command)
