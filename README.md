@@ -295,80 +295,98 @@ Module not found: Error: Can't resolve '@popperjs/core' in '/Users/chenhanting/d
 yarn add @popperjs/core
 ````
 
-畫面執行成功後，我們將layout畫面改成
-
-````erb
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Deliapp</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
-
-  <body>
-	  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-		  <div class="container-fluid">
-			  <a class="navbar-brand" href="javascript:void(0)">Deli App</a>
-			  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-				  <span class="navbar-toggler-icon"></span>
-			  </button>
-			  <div class="collapse navbar-collapse" id="mynavbar">
-				  <ul class="navbar-nav me-auto">
-					  <li class="nav-item">
-						  <a class="nav-link" href="javascript:void(0)">Link</a>
-					  </li>
-				  </ul>
-				  <ul class="navbar-nav">
-					  <li class="nav-item dropdown">
-						  <a class="nav-link dropdown-toggle"
-						     href="#"
-						     id="navbarDropdown"
-						     role="button"
-						     data-bs-toggle="dropdown"
-						     aria-expanded="false">
-							  User
-						  </a>
-						  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-							  <% if user_signed_in? %>
-								  <li class="nav-item">
-									  <%= link_to "logout", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
-								  </li>
-							  <% else %>
-								  <li class="nav-item">
-									  <%= link_to "login", new_user_session_path, class: "dropdown-item" %>
-								  </li>
-								  <li class="nav-item">
-									  <%= link_to "register", new_user_registration_path, class: "dropdown-item" %>
-								  </li>
-							  <% end %>
-						  </ul>
-					  </li>
-				  </ul>
-				  <form class="d-flex mx-lg-2">
-					  <input class="form-control me-2" type="text" placeholder="Search">
-					  <button class="btn btn-primary" type="button">Search</button>
-				  </form>
-			  </div>
-		  </div>
-	  </nav>
-	  
-	  <div class="container mt-4">
-		  <%= yield %>
-	  </div>
-  </body>
-</html>
-````
-
-先將以上做的用git做第一筆紀錄
+畫面執行成功後，我們改寫layout畫面，並且先將以上做的用git先記錄一筆commit
 
 ````git
 git add .
 git commit -m "feat: init"
+````
+
+#### role
+
+建立基本的角色設定
+
+````shell
+$ rails g model Role name:string
+$ rails g migration addRoleIdToUser role:references
+$ rake db:migrate
+````
+
+seed.rb
+
+````ruby
+['registered', 'banned', 'admin'].each do |role|
+  Role.find_or_create_by({ name: role })
+end
+````
+
+user.rb
+
+````ruby
+class User < ActiveRecord::Base
+  belongs_to :role
+  before_create :set_default_role
+  # or 
+  # before_validation :set_default_role 
+
+  private
+  def set_default_role
+    self.role ||= Role.find_by_name('registered')
+  end
+end
+````
+
+#### model
+
+````shell
+rails g model blogs name  
+rails g model article blog:belongs_to title content:text
+rails g migration addBlogIdAndNameToUser blog:reference name
+rails g model user_blog_interfaces user:belongs_to blog:belongs_to 
+rails db:migrate
+````
+
+foreign key 的`null: false` 在sqlite3不能用要刪掉
+
+````ruby
+class Blog < ApplicationRecord
+  has_many :articles
+  has_and_belongs_to_many :users, join_table: "user_blog_interfaces"
+end
+
+class User < ApplicationRecord
+  has_and_belongs_to_many :blogs, join_table: "user_blog_interfaces"
+end
+
+class UserBlogInterface < ApplicationRecord
+  belongs_to :user
+  belongs_to :blog
+end
+````
+
+為了方便操作，在seed也加入相對應的操作
+
+````ruby
+%w[registered banned admin].each do |role|
+  Role.find_or_create_by({ name: role })
+end
+
+user = User.create!(name: "Hanting", email: "admin@gmail.com", password: "12345678", role: Role.find_by_name("admin"))
+blog = user.blogs.create(name: "Blog 1st")
+# build 30 blogs
+(1...30).each { blog.articles.create(title: "title #{_1}", content: "content #{_1}") }
+
+# user = User.find_by_name("Hanting")
+# blog = user.blogs.create(name: "Blog 1st")
+# (1...30).each { blog.articles.create(title: "title #{_1}", content: "content #{_1}") }
+````
+
+推到遠端分支
+
+````git
+git remote add origin git@github.com:ChenHanTing/deli-app.git
+git branch -M main
+git push -u origin main
 ````
 
 
@@ -381,4 +399,5 @@ git commit -m "feat: init"
 - [安裝bootstrap5](https://blog.corsego.com/rails-bootstrap-5-yarn)
 - [navbar bootstrap](https://getbootstrap.com/docs/5.0/components/navbar/)
 - [devise](https://github.com/heartcombo/devise)
+- [Role](https://github.com/heartcombo/devise/wiki/How-To:-Add-a-default-role-to-a-User)
 

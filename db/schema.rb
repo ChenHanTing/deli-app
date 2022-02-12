@@ -10,7 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_12_121026) do
+ActiveRecord::Schema.define(version: 2022_02_12_133818) do
+
+  create_table "articles", force: :cascade do |t|
+    t.integer "blog_id"
+    t.string "title"
+    t.text "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["blog_id"], name: "index_articles_on_blog_id"
+  end
+
+  create_table "blogs", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "user_blog_interfaces", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "blog_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["blog_id"], name: "index_user_blog_interfaces_on_blog_id"
+    t.index ["user_id"], name: "index_user_blog_interfaces_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -20,8 +50,18 @@ ActiveRecord::Schema.define(version: 2022_02_12_121026) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "role_id"
+    t.integer "blog_id"
+    t.string "name"
+    t.index ["blog_id"], name: "index_users_on_blog_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role_id"], name: "index_users_on_role_id"
   end
 
+  add_foreign_key "articles", "blogs"
+  add_foreign_key "user_blog_interfaces", "blogs"
+  add_foreign_key "user_blog_interfaces", "users"
+  add_foreign_key "users", "blogs"
+  add_foreign_key "users", "roles"
 end
