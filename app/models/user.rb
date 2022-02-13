@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :role
-  before_create :set_default_role
+  before_validation :set_default_role
   # or
   # before_validation :set_default_role
   has_and_belongs_to_many :blogs, join_table: "user_blog_interfaces"

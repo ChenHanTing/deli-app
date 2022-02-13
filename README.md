@@ -525,6 +525,23 @@ Create a record successfully
 
 ![](https://tva1.sinaimg.cn/large/008i3skNgy1gzbkefji97j32800l2tai.jpg)
 
+## deploy
+
+See logs
+
+````sh
+heroku logs --tail --app=han-deliapp 
+heroku run rails db:create db:migrate db:seed --app=han-deliapp
+````
+
+````txt
+Running rails db:create db:migrate db:seed on ⬢ han-deliapp... ⣷ starting, run.6528 (Free)
+````
+
+## Demo 影片
+
+https://www.youtube.com/watch?v=k0uNel7TeaM
+
 ## 參考資料
 
 - [安裝ruby3版本](https://richstone.io/where-is-ruby-3-0-0-on-rbenv/)
@@ -536,4 +553,6 @@ Create a record successfully
 - [Role](https://github.com/heartcombo/devise/wiki/How-To:-Add-a-default-role-to-a-User)
 - [form view](https://codingpackets.com/blog/rails-6-forms-with-bootstrap-5-styling/)
 - [alert](https://www.rubyguides.com/2019/11/rails-flash-messages/)
+- [Heroku run db command](https://devcenter.heroku.com/articles/rake)
+- [rail webpack 設定](https://stackoverflow.com/questions/61212381/webpacker-asset-pack-size)
 
