@@ -1,5 +1,6 @@
 <div data-controller="articles">
-	<table class="table data-table" id="articles-table">
+  <!--	<table class="table data-table" id="articles-table">-->
+	<table class="table data-table">
 		<thead>
 			<tr>
 				<td>標題</td>
@@ -11,7 +12,7 @@
 	    <% articles.each do |article| %>
 				<tr>
 					<td><%= article.title %></td>
-					<td><%= article.blog.title %></td>
+					<td><%= article.blog.name %></td>
 					<td>
 						<%= link_to "編輯", edit_article_path(article), class: "btn btn-secondary btn-sm" %>
 						<%= link_to "刪除", article_path(article), class: "btn btn-danger btn-sm", method: :delete, data: { confirm: "確定要刪除這筆資料嗎?" } %>

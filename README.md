@@ -456,9 +456,74 @@ Could not find gem 'Ruby (~> 3.0.2.0)' in the local ruby installation.
 The source contains 'Ruby' at: 2.7.2.137
 ````
 
+畫面只好使用form_for
 
+## form
 
+下列為article form，表單寫法大致上如下
 
+````erb
+<%= form_for @article || :article, url: { action: action }, html: { class: "nifty_form" } do |f| %>
+	<div class="card">
+		<div class="card-body">
+			<div class="form-group mb-3">
+				<%= f.label :title, "標題:", class: "col-md-4 control-label" %>
+				<div class="col-md-8">
+					<%= f.text_field :title, class: "form-control" %>
+				</div>
+			</div>
+			
+			<div class="form-group mb-3">
+				<%= f.label :content, "內文:", class: "col-md-4 control-label" %>
+				<div class="col-md-8">
+					<%= f.text_area :content, class: "form-control", size: "60x12" %>
+				</div>
+			</div>
+			
+			<div class="form-group mb-3">
+				<%= f.label :content, "Blog:", class: "col-md-4 control-label" %>
+				<div class="col-md-8">
+					<%= current_user.blogs.exists? ?
+						    f.select(:blog_id, options_for_select(current_user.blogs.map { [_1.name, _1.id] }), 
+                        {}, class: "form-control" ) :
+					      link_to("Please create at least a blog before creating/updating an article", 
+                        blogs_path, class: "btn btn-primary")
+					%>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<%= f.submit "送出", class: "btn btn-primary" %>
+				<%= link_to "回首頁", articles_path, class: "btn btn-warning" %>
+			</div>
+		</div>
+	</div>
+<% end %>
+````
+
+## Result
+
+Banned User cannot login
+
+Admin User
+
+![](https://tva1.sinaimg.cn/large/008i3skNgy1gzbkbotsz4j32800lo766.jpg)
+
+Registered User
+
+![](https://tva1.sinaimg.cn/large/008i3skNgy1gzbkbqaprqj32800hq75j.jpg)
+
+Guest
+
+![](https://tva1.sinaimg.cn/large/008i3skNgy1gzbkf1n0p8j327u0r8gp7.jpg)
+
+Create/Edit page
+
+![](https://tva1.sinaimg.cn/large/008i3skNgy1gzbkg7cgrij31u40u0dhm.jpg)
+
+Create a record successfully
+
+![](https://tva1.sinaimg.cn/large/008i3skNgy1gzbkefji97j32800l2tai.jpg)
 
 ## 參考資料
 
@@ -469,4 +534,6 @@ The source contains 'Ruby' at: 2.7.2.137
 - [navbar bootstrap](https://getbootstrap.com/docs/5.0/components/navbar/)
 - [devise](https://github.com/heartcombo/devise)
 - [Role](https://github.com/heartcombo/devise/wiki/How-To:-Add-a-default-role-to-a-User)
+- [form view](https://codingpackets.com/blog/rails-6-forms-with-bootstrap-5-styling/)
+- [alert](https://www.rubyguides.com/2019/11/rails-flash-messages/)
 

@@ -12,6 +12,11 @@ class User < ApplicationRecord
   # https://stackoverflow.com/questions/2799746/habtm-relationship-does-not-support-dependent-option
   before_destroy { blogs.clear }
 
+  # Banned user cannot be loggin
+  def active_for_authentication?
+    super && self.role&.name != "banned"
+  end
+
   private
 
   def set_default_role

@@ -39,7 +39,7 @@
 						     role="button"
 						     data-bs-toggle="dropdown"
 						     aria-expanded="false">
-							  <%= user_signed_in? ? username : "Guest" %>
+							  <%= user_signed_in? ? "HI! #{username}" : "Guest" %>
 						  </a>
 						  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 							  <% if user_signed_in? %>
@@ -66,6 +66,11 @@
 	  </nav>
 	  
 	  <div class="container mt-4">
+		  <% flash.each do |type, msg| %>
+			  <div class="alert alert-info">
+				  <%= msg %>
+			  </div>
+		  <% end %>
 		  <%= yield %>
 	  </div>
   </body>

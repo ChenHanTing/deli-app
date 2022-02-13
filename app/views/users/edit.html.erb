@@ -1,2 +1,43 @@
-<h1>Users#edit</h1>
-<p>Find me in app/views/users/edit.html.erb</p>
+<h3>編輯</h3>
+
+<%= form_for @user, url: { action: 'update' }, html: { class: "nifty_form" } do |f| %>
+	<div class="card" data-controller="user">
+		<div class="card-body">
+			<div class="form-group mb-3">
+				<%= f.label :name, "使用者名稱:", class: "col-md-4 control-label" %>
+				<div class="col-md-8">
+					<%= f.text_field :name, class: "form-control" %>
+				</div>
+			</div>
+			
+			<div class="form-group mb-3">
+				<%= f.label :email, "email:", class: "col-md-4 control-label" %>
+				<div class="col-md-8">
+					<%= f.text_field :email, class: "form-control" %>
+				</div>
+			</div>
+			
+			<div class="form-group mb-3">
+				<%= f.label :password, "password:", class: "col-md-4 control-label" %>
+				<div class="col-md-8">
+					<%= f.text_field :password, class: "form-control", disabled: true, data: { "user-target": "password" } %>
+				</div>
+			</div>
+			
+			<div class="form-group mb-3">
+				<%= f.label :role_id, "角色權限:", class: "col-md-4 control-label" %>
+				<div class="col-md-8">
+					<%= f.select :role_id,
+					             options_for_select(Role.all.map { [_1.name, _1.id] }, @user.role_id), {},
+					             class: "form-control" %>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<%= f.submit "送出", class: "btn btn-primary" %>
+				<%= link_to "回首頁", blogs_path, class: "btn btn-warning" %>
+				<%= tag.button "是否改密碼", class: "btn btn-danger", type: :button, data: { action: "user#toggle" } %>
+			</div>
+		</div>
+	</div>
+<% end %>

@@ -9,10 +9,13 @@ class UsersController < ApplicationController
   end
 
   def update
-  end
+    if @user.update(user_params)
+      flash[:notice] = '更新成功'
+    else
+      flash[:alert] = '更新失敗'
+    end
 
-  def destroy
-
+    redirect_to users_path
   end
 
   private
@@ -23,5 +26,9 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find_by_id(params[:id])
+  end
+
+  def user_params
+    params.require(:user).permit(:name, :email, :password, :role_id)
   end
 end

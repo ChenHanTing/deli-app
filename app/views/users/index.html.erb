@@ -1,2 +1,23 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<div data-controller="articles">
+	<!--	<table class="table data-table" id="articles-table">-->
+	<table class="table data-table">
+		<thead>
+		<tr>
+			<td>使用者名稱</td>
+			<td>Email</td>
+			<td></td>
+		</tr>
+		</thead>
+		<tbody>
+		<% User.all.each do |user| %>
+			<tr>
+				<td><%= user.name %></td>
+				<td><%= user.email %></td>
+				<td>
+					<%= link_to "編輯", edit_user_path(user), class: "btn btn-secondary btn-sm" %>
+				</td>
+			</tr>
+		<% end %>
+		</tbody>
+	</table>
+</div>
