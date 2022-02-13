@@ -538,9 +538,36 @@ heroku run rails db:create db:migrate db:seed --app=han-deliapp
 Running rails db:create db:migrate db:seed on ⬢ han-deliapp... ⣷ starting, run.6528 (Free)
 ````
 
-## Demo 影片
+Heroku 新增 Procfile
 
-https://www.youtube.com/watch?v=k0uNel7TeaM
+```
+We recommend explicitly declaring how to boot your server process via a Procfile.
+```
+
+線上安裝webpacker
+
+````shell
+heroku run bundle exec rails webpacker:install --app=han-deliapp 
+````
+
+將 `stylesheet_link_tag` 改成 `stylesheet_pack_tag`以改善部署上`heroku`沒有 css 的問題
+
+Dang it. The reason why its not loading in Heroku was because I still used stylesheet_link_tag instead of stylesheet_pack_tag in my application.html file in my layout folder.
+
+So in local development, since there is a webpack-dev-server, it compiles it. However, in heroku, I have to specify it and I can do this if I change the stylesheet_link_tag to use stylesheet_pack_tag instead.
+
+## Demo 影片與網站
+
+| 項目 | 連結                                        |
+| ---- | ------------------------------------------- |
+| 網站 | https://han-deliapp.herokuapp.com/          |
+| 影片 | https://www.youtube.com/watch?v=k0uNel7TeaM |
+
+最高權限帳密如下，其他權限都為一般權限
+
+| 帳號 | admin@gmail.com |
+| ---- | --------------- |
+| 密碼 | 12345678        |
 
 ## 參考資料
 
@@ -554,5 +581,6 @@ https://www.youtube.com/watch?v=k0uNel7TeaM
 - [form view](https://codingpackets.com/blog/rails-6-forms-with-bootstrap-5-styling/)
 - [alert](https://www.rubyguides.com/2019/11/rails-flash-messages/)
 - [Heroku run db command](https://devcenter.heroku.com/articles/rake)
-- [rail webpack 設定](https://stackoverflow.com/questions/61212381/webpacker-asset-pack-size)
+- [rail webpack config](https://stackoverflow.com/questions/61212381/webpacker-asset-pack-size)
+- [stylesheet_pack_tag](https://stackoverflow.com/questions/58328026/css-and-bootstrap-not-loading-in-rails-6-app-when-deployed-to-heroku)
 
