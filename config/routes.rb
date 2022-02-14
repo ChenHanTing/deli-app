@@ -4,5 +4,14 @@ Rails.application.routes.draw do
   resources :users, only: %w[index edit update]
   devise_for :users
   root to: 'pages#index'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  # api mode
+  namespace :api do
+    namespace :v1 do
+      post 'login' => 'authentication#login'
+      delete 'logout' => 'authentication#logout'
+      get 'ping' => 'ping#show'
+      get 'ping_auth' => 'ping#auth'
+    end
+  end
 end

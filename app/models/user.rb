@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   belongs_to :role
   before_validation :set_default_role
+  before_create :generate_authentication_token
   # or
   # before_validation :set_default_role
   has_and_belongs_to_many :blogs, join_table: "user_blog_interfaces"
@@ -15,6 +16,15 @@ class User < ApplicationRecord
   # Banned user cannot be loggin
   def active_for_authentication?
     super && self.role&.name != "banned"
+  end
+
+  def generate_authentication_token
+    self.authentication_token = Devise.friendly_token
+  end
+
+  def regenerate_auth_token
+    self.authentication_token = Devise.friendly_token
+    self.save!
   end
 
   private

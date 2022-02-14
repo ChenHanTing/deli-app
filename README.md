@@ -569,6 +569,158 @@ So in local development, since there is a webpack-dev-server, it compiles it. Ho
 | ---- | --------------- |
 | 密碼 | 12345678        |
 
+## Api Login & Logout
+
+剛好woo-think專案的登入跟登出一直擺著太久，利用這個專案來實作簡易登入、登出
+
+login & response
+
+````sh
+curl --location --request POST 'http://localhost:3000/api/v1/login' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: __profilin=p%3Dt' \
+--data-raw '{
+  "email": "admin@gmail.com",
+  "password": "12345678"
+}'
+````
+
+````json
+{
+    "message": "ok",
+    "authentication_token": "bHPvDqzTNTUff4uzPX2v"
+}
+````
+
+````json
+{
+    "message": "invalid user email or password"
+}
+````
+
+Logout
+
+````sh
+curl --location --request DELETE 'http://localhost:3000/api/v1/logout' \
+--header 'Authorization: K2y1dZgzBqCF1HCKezWm' \
+--header 'Cookie: __profilin=p%3Dt' \
+--data-raw ''
+````
+
+````json
+{
+    "message": "you have been logged out"
+}
+````
+
+````json
+{
+    "message": "invalid token"
+}
+````
+
+ping_auth
+
+````shell
+curl --location --request GET 'http://localhost:3000/api/v1/ping_auth' \
+--header 'Authorization: K2y1dZgzBqCF1HCKezWm' \
+--header 'Cookie: __profilin=p%3Dt'
+````
+
+````json
+{ "success": true }
+````
+
+````json
+{
+    "message": "invalid token"
+}
+````
+
+Controller 實作簡單的 Api 登入
+
+````ruby
+module Api
+  module V1
+    class PingController < ApplicationController
+      before_action :authenticate_user_token, only: :auth
+
+      def show
+        render json: { success: true }
+      end
+
+      def auth
+        render json: { success: user_signed_in? }
+      end
+    end
+  end
+end
+````
+
+````ruby
+module Api
+  module V1
+    class AuthenticationController < ApplicationController
+      before_action :authenticate_user_token, only: :logout
+
+      def login
+        if valid_user?
+          render json: { message: 'ok', authentication_token: @user.authentication_token }, status: 200
+        else
+          render json: { message: 'invalid user email or password' }, status: 401
+        end
+      end
+
+      def logout
+        current_user.regenerate_auth_token
+        render json: { message: 'you have been logged out' }, status: 200
+      end
+
+      private
+
+      def valid_user?
+        @user = User.find_by(email: params[:email])
+        return false if @user.blank?
+
+        @user.valid_password?(params[:password])
+      end
+    end
+  end
+end
+````
+
+````ruby
+module Api
+  module V1
+    class ApplicationController < ActionController::Base
+      skip_before_action :verify_authenticity_token
+
+      def authenticate_user_token
+        user = User.find_by(authentication_token: request.headers["Authorization"])
+        return render(json: { message: 'invalid token' }, status: 401) if user.nil?
+
+        # store false would not store user session
+        sign_in(user, store: false)
+      end
+    end
+  end
+end
+````
+
+routes 
+
+````ruby
+# api mode
+namespace :api do
+  namespace :v1 do
+    post 'login' => 'authentication#login'
+    delete 'logout' => 'authentication#logout'
+    get 'ping' => 'ping#show'
+    get 'ping_auth' => 'ping#auth'
+  end
+end
+````
+
 ## 參考資料
 
 - [安裝ruby3版本](https://richstone.io/where-is-ruby-3-0-0-on-rbenv/)
@@ -583,4 +735,10 @@ So in local development, since there is a webpack-dev-server, it compiles it. Ho
 - [Heroku run db command](https://devcenter.heroku.com/articles/rake)
 - [rail webpack config](https://stackoverflow.com/questions/61212381/webpacker-asset-pack-size)
 - [stylesheet_pack_tag](https://stackoverflow.com/questions/58328026/css-and-bootstrap-not-loading-in-rails-6-app-when-deployed-to-heroku)
+- [Authenticate with header](https://api.rubyonrails.org/classes/ActionController/HttpAuthentication/Token.html)
+- devise
+  - [API mode](https://thinkster.io/tutorials/rails-json-api/setting-up-users-and-authentication-for-our-api)
+  - [Common Devise login for web and api](https://stackoverflow.com/questions/32050423/common-devise-login-for-web-and-api)
+  - [Generate Auth token](https://ihower.tw/rails/fullstack-web-api-key-auth.html)
+  - [api login](https://www.spreered.com/rails_api_devise_login/)
 
