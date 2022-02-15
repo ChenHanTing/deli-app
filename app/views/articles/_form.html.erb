@@ -16,6 +16,13 @@
 			</div>
 			
 			<div class="form-group mb-3">
+				<%= f.label :title, "連結:", class: "col-md-4 control-label" %>
+				<div class="col-md-8">
+					<%= f.text_field :link, class: "form-control" %>
+				</div>
+			</div>
+			
+			<div class="form-group mb-3">
 				<%= f.label :content, "Blog:", class: "col-md-4 control-label" %>
 				<div class="col-md-8">
 					<%= current_user.blogs.exists? ?

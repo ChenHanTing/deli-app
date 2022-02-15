@@ -721,6 +721,16 @@ namespace :api do
 end
 ````
 
+## 黑客松
+
+星展銀行的面試偶然發現黑客松類似leetcode的題目，可以進去[連結](https://www.hackerrank.com/interview/preparation-kits/one-month-preparation-kit/one-month-week-one/challenges)寫寫看
+
+不過我後來就用github帳號來辦一個leetcode登入權限
+
+#### English Free Writing
+
+想要練習自我寫作，在自己網站實作就好了
+
 ## 參考資料
 
 - [安裝ruby3版本](https://richstone.io/where-is-ruby-3-0-0-on-rbenv/)
