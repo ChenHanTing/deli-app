@@ -1,6 +1,6 @@
 <div data-controller="articles">
   <!--	<table class="table data-table" id="articles-table">-->
-	<table class="table data-table">
+	<table class="table data-table" id="articles-table">
 		<thead>
 			<tr>
 				<td>標題</td>
@@ -21,6 +21,21 @@
 	    <% end %>
 		</tbody>
 	</table>
-	
+
 	<%= link_to "新增", new_article_path, class: "btn btn-primary" %>
 </div>
+
+<script>
+$(document).ready(function() {
+  // $('#articles-table').DataTable({
+	// 		serverSide: false,
+	// 		bStateSave: true,
+	// 		bAutoWidth: false,
+	// 		searchDelay: 1200,
+	// 		ordering: false,
+	// 		searching: true,
+	// 		stateSave: true,
+	// 		language: { url: '/datatable.chinese_traditional.lang.json' },
+  //  })
+});
+</script>

@@ -727,9 +727,27 @@ end
 
 不過我後來就用github帳號來辦一個leetcode登入權限
 
-#### English Free Writing
+## English Free Writing
 
 想要練習自我寫作，在自己網站實作就好了
+
+## Datatable
+
+按下Chrome前一頁、後一頁出現問題
+
+![](https://tva1.sinaimg.cn/large/e6c9d24egy1gzheij3be0j222u0tgn02.jpg)
+
+The more times I press prev and next page, the more error on the webpage.
+
+![](https://tva1.sinaimg.cn/large/e6c9d24egy1gzhequ53cwj21uz0u077p.jpg)
+
+I attempted to write the code below, but in vain.
+
+````js
+this.dataTable().clear().draw();
+````
+
+
 
 ## 參考資料
 

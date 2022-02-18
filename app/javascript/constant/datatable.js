@@ -6,5 +6,6 @@ export const dataTableConst = {
   searchDelay: 1200,
   ordering: false,
   searching: true,
+  stateSave: true,
   language: { url: '/datatable.chinese_traditional.lang.json' },
 }
